@@ -13,5 +13,13 @@ export default {
       },
     },
   },
-  plugins: [],
-}
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        ".placeholder-secondary::placeholder": {
+          color: "#6b7280", // Secondary color for placeholders
+        },
+      });
+    },
+  ],
+};
