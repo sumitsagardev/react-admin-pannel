@@ -5,11 +5,25 @@ import { FaArrowLeft } from "react-icons/fa"; // Import back icon
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [otpSent, setOtpSent] = useState(false);
+  const [error, setError] = useState(""); // State for error messages
   const navigate = useNavigate(); // For navigation
 
   const handleSendOtp = (event) => {
     event.preventDefault();
-    setOtpSent(true); // Simulate OTP sent action
+
+    // Validation: Check if the email field is empty or invalid
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation regex
+    if (!email) {
+      setError("Email is required.");
+      return;
+    } else if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    // Clear errors and simulate OTP sent action
+    setError("");
+    setOtpSent(true);
   };
 
   return (
@@ -35,8 +49,11 @@ const ForgotPassword = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="w-full py-2 px-3 border-2 border-gray-300 focus:outline-none focus:border-blue-500 rounded-md"
+              className={`w-full py-2 px-3 border-2 ${
+                error ? "border-red-500" : "border-gray-300"
+              } focus:outline-none focus:border-blue-500 rounded-md`}
             />
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
           <button
             type="submit"

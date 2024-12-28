@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [usernameValue, setUsernameValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
+  const navigate = useNavigate(); // Hook to navigate to different pages
 
   const handleUsernameChange = (event) => {
     setUsernameValue(event.target.value);
@@ -13,9 +14,27 @@ const LoginPage = () => {
     setPasswordValue(event.target.value);
   };
 
+  const handleLogin = () => {
+    // Redirect to the dashboard without validation
+    navigate("/dashboard");
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="relative min-h-screen bg-gray-100 flex items-center justify-center">
+      {/* Video Background */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="src/assets/login.mp4"
+        autoPlay
+        loop
+        muted
+      ></video>
+
+      {/* Overlay for better contrast */}
+      <div className="absolute inset-0 bg-black bg-opacity-90"></div>
+
+      {/* Login Content */}
+      <div className="relative flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden z-10">
         <div className="w-full md:w-1/2 p-8">
           <h2 className="text-3xl font-bold mb-4 text-secondary">Login</h2>
           <p className="text-gray text-md font-semibold mb-4">
@@ -43,7 +62,8 @@ const LoginPage = () => {
             <div className="flex justify-between items-center mb-4">
               <button
                 type="button"
-                className="bg-primary text-white py-2 px-4 rounded-lg hover:bg-yellow-600"
+                onClick={handleLogin} // Trigger login on click
+                className="bg-primary text-white py-2 px-4 rounded-lg hover:bg-secondary"
               >
                 Login
               </button>
@@ -63,7 +83,7 @@ const LoginPage = () => {
           </p>
           <Link
             to="/register"
-            className="bg-yellow-500 py-2 px-4 rounded-lg hover:bg-yellow-600"
+            className="bg-primary py-2 px-4 rounded-lg hover:bg-secondary text-white"
           >
             Register Now!
           </Link>
