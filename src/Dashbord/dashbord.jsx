@@ -4,13 +4,92 @@ import { MdSunny, MdOutlineAutorenew } from "react-icons/md";
 import { IoMoon } from "react-icons/io5";
 import { AiOutlineMenu } from "react-icons/ai";
 
+import { Bar } from "react-chartjs-2"; // Import Bar chart
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
 import Sidebar from "../components/Sidebar"; // Import Sidebar component
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function Dashboard() {
   const [colorMode, setColorMode] = useState("light");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Profile dropdown state
   const [isSidebarVisible, setIsSidebarVisible] = useState(true); // Sidebar visibility state
   const dropdownRef = useRef(null); // Reference for the dropdown menu
+
+  const cardData = [
+    {
+      title: "Users",
+      value: "26K",
+      percentageChange: -12.4,
+      color: "bg-blue-500",
+    },
+    {
+      title: "Revenue",
+      value: "$8K",
+      percentageChange: 5.6,
+      color: "bg-green-500",
+    },
+    {
+      title: "Orders",
+      value: "1.2K",
+      percentageChange: -3.2,
+      color: "bg-yellow-500",
+    },
+    {
+      title: "Visits",
+      value: "15K",
+      percentageChange: 7.8,
+      color: "bg-red-500",
+    },
+  ];
+
+  // Chart data
+  const chartData = {
+    labels: ["January", "February", "March", "April", "May", "June"],
+    datasets: [
+      {
+        label: "Revenue",
+        data: [12000, 19000, 3000, 5000, 20000, 30000],
+        backgroundColor: "rgba(75, 192, 192, 0.5)",
+      },
+      {
+        label: "Expenses",
+        data: [8000, 15000, 2000, 4000, 18000, 25000],
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+    ],
+  };
+
+  // Chart options
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Monthly Revenue and Expenses",
+      },
+    },
+  };
 
   // Toggle the profile dropdown
   const toggleDropdown = () => {
@@ -41,7 +120,7 @@ function Dashboard() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row min-h-screen">
+      <div className="flex  flex-col md:flex-row min-h-screen">
         {/* Sidebar Component - Visible/Hidden based on state */}
         <Sidebar isVisible={isSidebarVisible} />
 
@@ -82,52 +161,12 @@ function Dashboard() {
                   }}
                   className="flex items-center text-gray-500"
                 >
-                  {/* Show only the icon for the current theme */}
                   {colorMode === "dark" ? (
                     <IoMoon size={24} />
-                  ) : colorMode === "auto" ? (
-                    <MdOutlineAutorenew size={24} />
                   ) : (
                     <MdSunny size={24} />
                   )}
                 </button>
-                {/* Show all icons and names on hover */}
-                <div className="absolute left-0 mt-2 bg-white border rounded shadow-lg z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <ul className="py-2 text-sm">
-                    {/* Light Theme Option */}
-                    <li
-                      className={`px-4 py-2 cursor-pointer flex items-center space-x-2 ${
-                        colorMode === "light" ? "bg-gray-100" : ""
-                      }`}
-                      onClick={() => setColorMode("light")}
-                    >
-                      <MdSunny className="mr-2" />
-                      <span>Light</span>
-                    </li>
-
-                    {/* Dark Theme Option */}
-                    <li
-                      className={`px-4 py-2 cursor-pointer flex items-center space-x-2 ${
-                        colorMode === "dark" ? "bg-gray-100" : ""
-                      }`}
-                      onClick={() => setColorMode("dark")}
-                    >
-                      <IoMoon className="mr-2" />
-                      <span>Dark</span>
-                    </li>
-
-                    {/* Auto Theme Option */}
-                    <li
-                      className={`px-4 py-2 cursor-pointer flex items-center space-x-2 ${
-                        colorMode === "auto" ? "bg-gray-100" : ""
-                      }`}
-                      onClick={() => setColorMode("auto")}
-                    >
-                      <MdOutlineAutorenew className="mr-2" />
-                      <span>Auto</span>
-                    </li>
-                  </ul>
-                </div>
               </div>
 
               {/* Profile Dropdown */}
@@ -163,7 +202,35 @@ function Dashboard() {
           </header>
 
           {/* Page Content */}
-          <div>Page Content</div>
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Dashboard Overview</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-4 gap-4">
+              {cardData.map((card, index) => (
+                <div
+                  key={index}
+                  className={`p-8 rounded-lg shadow-lg text-white ${card.color}`}
+                >
+                  <h3 className="text-xl font-semibold">{card.title}</h3>
+                  <p className="text-2xl">{card.value}</p>
+                  <p
+                    className={`text-sm ${
+                      card.percentageChange > 0
+                        ? "text-green-300"
+                        : "text-red-300"
+                    }`}
+                  >
+                    {card.percentageChange}% Change
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Chart Section */}
+            <div className="mt-8">
+              <h2 className="text-lg font-semibold mb-4">Performance Chart</h2>
+              <Bar data={chartData} options={chartOptions} />
+            </div>
+          </div>
         </div>
       </div>
     </>

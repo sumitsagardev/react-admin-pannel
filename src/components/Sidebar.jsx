@@ -14,10 +14,10 @@ function Sidebar() {
   };
 
   return (
-    <div className="w-full md:flex-[15] bg-primary text-heading">
+    <div className="w-full md:flex-[15] bg-primary text-heading sticky top-0 h-screen">
       <div className="p-4 space-y-6">
         {/* Payment Gateway Section */}
-        <div className="border-b pb-4">
+        <div className="border-b mb-4">
           <div className="flex items-center space-x-2">
             <img
               src="src/assets/payment-gateway.png"
@@ -69,7 +69,7 @@ function Sidebar() {
               onClick={() => handleClick("faqs")}
             >
               <RiChat1Line className="text-lg" />
-              <li className="text-sm font-medium">FAQs</li>
+              <li className="text-sm font-medium list-none">FAQs</li>
             </div>
 
             {/* Privacy Policy */}
@@ -80,7 +80,7 @@ function Sidebar() {
               onClick={() => handleClick("privacy")}
             >
               <MdOutlinePolicy className="text-lg" />
-              <li className="text-sm font-medium">Privacy Policy</li>
+              <li className="text-sm font-medium list-none">Privacy Policy</li>
             </div>
 
             {/* Terms & Conditions */}
@@ -91,7 +91,9 @@ function Sidebar() {
               onClick={() => handleClick("terms")}
             >
               <FaFile className="text-lg" />
-              <li className="text-sm font-medium">Terms & Conditions</li>
+              <li className="text-sm font-medium list-none">
+                Terms & Conditions
+              </li>
             </div>
           </div>
         </div>
